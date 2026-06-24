@@ -1,6 +1,8 @@
 # HMR
 
-# Mobile AI Chatbot Project
+Admin workspace for HMR (همر) — an AI mobile-hardware advisor chatbot for the Iranian market. Persian-speaking users; advisor, not decision-maker.
+
+## Mobile AI Chatbot Project
 
 This project is an AI chatbot specialized in mobile technology.
 
