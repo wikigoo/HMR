@@ -8,3 +8,15 @@ This project is an AI chatbot specialized in mobile technology.
 * **Chatbot Engine:** Powered by [Flowise](https://github.com/FlowiseAI/Flowise)
 * **Website:** Built with [Astro](https://github.com/withastro/astro) and deployed on [Cloudflare](https://github.com/cloudflare)
 * **Mobile App:** Developed with [Flutter](https://github.com/flutter/flutter)
+
+## Quick Reference
+
+| Item | Value |
+|------|-------|
+| Live site | hmrbot.com |
+| Chat | hmrbot.com/chat |
+| Flowise backend | srv.hmrbot.com |
+| VPS | Germany · Ubuntu 24.04 · 16 GB RAM · 8 CPU |
+| AI model | Gemini Flash Lite via OpenRouter |
+| Frontend | Astro SSG on Cloudflare Workers |
+| Active chatflow | HMR-Chatbot-V4 |
