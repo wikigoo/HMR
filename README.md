@@ -9,6 +9,14 @@ This project is an AI chatbot specialized in mobile technology.
 * **Website:** Built with [Astro](https://github.com/withastro/astro) and deployed on [Cloudflare](https://github.com/cloudflare)
 * **Mobile App:** Developed with [Flutter](https://github.com/flutter/flutter)
 
+## The Five Product Pillars
+  
+1. New-phone buying guide
+2. Used-phone buying guide + fraud / counterfeit detection
+3. Hardware troubleshooting & fault diagnosis
+4. Hardware education
+5. Accessories guidance
+
 ## Quick Reference
 
 | Item | Value |
