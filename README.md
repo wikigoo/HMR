@@ -17,6 +17,6 @@ This project is an AI chatbot specialized in mobile technology.
 | Chat | hmrbot.com/chat |
 | Flowise backend | srv.hmrbot.com |
 | VPS | Germany · Ubuntu 24.04 · 16 GB RAM · 8 CPU |
-| AI model | Gemini Flash Lite via OpenRouter |
+| AI model | [Gemini 3.1 Flash-Lite](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-1-flash-lite) via OpenRouter |
 | Frontend | Astro SSG on Cloudflare Workers |
 | Active chatflow | HMR-Chatbot-V4 |
