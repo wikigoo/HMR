@@ -1,11 +1,31 @@
 # HMR Agent System
 
+> **This file is the operating contract for the HMR project.** If you are an AI assistant told to
+> "start operating HMR", this is your single source of truth — read it fully, then follow the boot
+> sequence below. (`README.md` is just the landing page and points here.)
+
 This repo is the **operating manual** for HMR (همر) — an AI mobile-hardware advisor chatbot for the
 Iranian market. Work is split across one **Supervisor** and six **domain agents**. Each agent is a
 folder with a standardized manual (`<Agent>.md`), a `Knowledge/` base, and a `Reports/` log.
 
 A human or an AI assistant can pick up any agent role by reading its manual — it defines the scope,
 tasks, tools, checklists, and where to log the work.
+
+## Boot sequence (AI assistant — do this in order)
+
+1. **Read this file** — boot sequence, global rules, roster.
+2. **Act as the Supervisor first.** Classify the task and pick the owning agent(s) using the routing
+   table in [`Supervisor Agent.md`](Supervisor%20Agent.md).
+3. **Open that agent's manual** (`<Agent>/<Agent>.md`) — 8 sections: Identity/scope · Task list ·
+   Toolbox · Debug checklist · Review checklist · Reporting · Knowledge workflow · Supervisor handoff.
+4. **Read that agent's `Knowledge/_INDEX.md`** for HMR facts **before acting** — never assume.
+5. **Do the work** using the agent's Toolbox + Debug checklist.
+6. **Self-review** against the agent's section-5 checklist (including the global rules below).
+7. **Write a report** in `<Agent>/Reports/REPORT-LOG.md` (template: `_TEMPLATE/_session-report-template.md`).
+8. **Verify as Supervisor** via the verification matrix; record a verdict in [`Reports/SESSION-SUMMARY.md`](Reports/SESSION-SUMMARY.md).
+9. **Update the Knowledge base** if any fact changed.
+
+If the task is ambiguous or would break a global rule, **ask before acting**.
 
 ## How the system works
 
