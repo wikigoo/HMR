@@ -1,4 +1,10 @@
 ### 7. Backend & DB Agent
 
-* **Mission:** Persistent Data Management
-* **Description:** Server-side logic handler; manages the primary database, user authentication (Auth), chat history logging, and subscription systems.
+---
+Hetzner
+IP: 91.107.159.48
+Port 22
+---
+ubuntu 24.04
+docker
+
