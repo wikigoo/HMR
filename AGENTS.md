@@ -3,6 +3,9 @@
 > **This file is the operating contract for the HMR project.** If you are an AI assistant told to
 > "start operating HMR", this is your single source of truth — read it fully, then follow the boot
 > sequence below. (`README.md` is just the landing page and points here.)
+>
+> **Skill entry point:** when HMR is installed as a Claude **Skill**, `SKILL.md` (repo root) is the
+> entry point — it loads this repo live from GitHub and routes into this boot sequence.
 
 This repo is the **operating manual** for HMR (همر) — an AI mobile-hardware advisor chatbot for the
 Iranian market. Work is split across one **Supervisor** and six **domain agents**. Each agent is a
