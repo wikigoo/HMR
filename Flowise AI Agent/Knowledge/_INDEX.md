@@ -17,8 +17,8 @@
 
 | File | Status |
 |---|---|
-| `HMR-MultiAgent-V6.json` | **Active flow (latest in repo)** |
-| `Chatbot-V5.json` | Previous version (archive) |
+| `HMR-Agentflows-v2 Agents.json` | **Active flow (production)** |
+| `HMR-Agentflows-v1 Agents.json` | Previous version (legacy/archive) |
 | `Instructions.md` | Flow build/run instructions — keep in sync with the active flow |
 
 ## Vendored upstream docs (reference only)

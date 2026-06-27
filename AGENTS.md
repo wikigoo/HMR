@@ -88,6 +88,6 @@ Start a new agent from [`_TEMPLATE/Agent-Template.md`](_TEMPLATE/Agent-Template.
 | VPS | Germany (Nuremberg) · Ubuntu 24.04 · 2 Core · 4 GB RAM · 40 GB · IP 91.107.159.48 |
 | AI model | Gemini 3.1 Flash-Lite via OpenRouter |
 | Frontend | Astro SSG on Cloudflare Workers |
-| Active chatflow | HMR-MultiAgent-V6 (latest in repo) |
+| Active chatflow | HMR-Agentflows-v2 |
 
 > If any value above disagrees with reality, the owning agent must fix it and log the change.

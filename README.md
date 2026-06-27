@@ -37,7 +37,7 @@ one Supervisor agent routes and verifies work across six domain agents.
 | VPS | Germany (Nuremberg) · Ubuntu 24.04 · 2 Core · 4 GB RAM · 40 GB · IP 91.107.159.48 |
 | AI model | [Gemini 3.1 Flash-Lite](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-1-flash-lite) via OpenRouter |
 | Frontend | Astro SSG on Cloudflare Workers |
-| Active chatflow | HMR-MultiAgent-V6 (latest in repo) |
+| Active chatflow | HMR-Agentflows-v2 |
 
 > The global rules (Persian output · honesty · live-price-only · advisory-not-decisional) and the full
 > agent workflow are defined in [`AGENTS.md`](AGENTS.md) — the single source of truth.

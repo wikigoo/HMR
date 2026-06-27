@@ -15,7 +15,7 @@
 | **Does NOT own (hand off)** | Server/Docker → DevOps (6); APIs/data → Backend (7); site/embed → Web (4) |
 | **HMR-tools skill** | `flowise-hmr-expert` |
 | **Upstream** | https://github.com/FlowiseAI/Flowise |
-| **Active flow** | `HMR-Chatbot/HMR-MultiAgent-V6.json` (latest in repo; `Chatbot-V5.json` = previous) |
+| **Active flow** | `HMR-Chatbot/HMR-Agentflows-v2 Agents.json` (production; `HMR-Agentflows-v1 Agents.json` = previous/legacy) |
 
 ## 2. Task list
 
