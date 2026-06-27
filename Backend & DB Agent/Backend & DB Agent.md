@@ -24,6 +24,7 @@
 - [ ] Maintain third-party integrations (data sources, OpenRouter-adjacent services)
 - [ ] Manage auth, API keys, and secret storage
 - [ ] Provide DevOps with backup-relevant DB details
+- [ ] **On request, produce a full server status report** by following [`Server-Status-Report-SOP.md`](Server-Status-Report-SOP.md) exactly (read-only; hand fixes to DevOps)
 
 ## 3. Toolbox
 
@@ -34,6 +35,7 @@
 | DB client (psql / mysql / sqlite per stack) | Schema + queries |
 | `curl` / REST client | Hit and verify API endpoints |
 | Secret store / `.env` | API keys, credentials (never commit) |
+| [`Server-Status-Report-SOP.md`](Server-Status-Report-SOP.md) | Step-by-step runbook for the on-demand **server status report** (read-only diagnostics across host, Docker, Flowise, DB, network, backups, security) |
 
 ## 4. Debug checklist
 
@@ -59,6 +61,7 @@ before destructive DB operations (drop/alter/delete) — request a backup from D
 ## 7. Knowledge-base workflow
 
 - Read [`Knowledge/_INDEX.md`](Knowledge/_INDEX.md) first (schema, data sources, endpoint list, host facts).
+- For any **server status report**, follow [`Server-Status-Report-SOP.md`](Server-Status-Report-SOP.md) end to end — it is the authoritative procedure.
 - Update the index + log whenever the schema, a data source, or the host IP changes.
 
 ## 8. Supervisor handoff

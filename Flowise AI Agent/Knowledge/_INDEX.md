@@ -13,6 +13,17 @@
 | `FlowiseAI Prompt System Structure.md` | Prompt structure for the chatflow | 2026-06-26 |
 | `API-settings.md` | Prediction API + API settings | 2026-06-26 |
 
+## LLM / model reference (in `../LLM/`)
+
+Cleaned OpenRouter snapshots (charts + upstream model catalog stripped). Captured 2026-06-27 —
+re-verify pricing/uptime at the source URL before any cost decision.
+
+| File | Model | HMR role | Last reviewed |
+|---|---|---|---|
+| `../LLM/Gemini 3.1 Flash Lite - API Pricing & Providers.md` | Gemini 3.1 Flash Lite | Primary chat LLM | 2026-06-27 |
+| `../LLM/Rerank 4 Pro - API Pricing & Providers.md` | Cohere Rerank 4 Pro | RAG reranker | 2026-06-27 |
+| `../LLM/Text Embedding 3 Large - API Pricing & Providers.md` | OpenAI Text Embedding 3 Large | RAG embeddings | 2026-06-27 |
+
 ## Flow artifacts (in `../HMR-Chatbot/`)
 
 | File | Status |
@@ -28,9 +39,10 @@
 
 ## HMR facts this agent relies on
 
-- Model: Gemini 3.1 Flash-Lite via OpenRouter
+- Models (via OpenRouter): chat = Gemini 3.1 Flash-Lite · embeddings = OpenAI Text Embedding 3 Large · reranker = Cohere Rerank 4 Pro (see `../LLM/`)
 - Output rules: Persian, honest (no fabricated specs/prices), live-price-only, advisory-not-decisional
-- Backend reachable as srv.hmrbot.com / api.hmrbot.com
+- Backend reachable as srv.hmrbot.com
+- Active chatflow: `HMR-Agentflows-v2 Agents.json`
 
 ## Review cadence
 

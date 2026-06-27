@@ -10,7 +10,7 @@
 ## HMR facts this agent relies on
 
 - Site: hmrbot.com · Chat: hmrbot.com/chat
-- Backend API the /chat calls: api.hmrbot.com (Flowise on the VPS)
+- Backend API the /chat calls: srv.hmrbot.com (Flowise on the VPS)
 - Hosting: Astro SSG on Cloudflare Workers; DNS at Cloudflare
 - Managed repo: https://github.com/wikigoo/HMR-Astro
 

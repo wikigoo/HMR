@@ -13,7 +13,7 @@
 ## HMR facts this agent relies on
 
 - Managed repo: https://github.com/wikigoo/HMR-Flutter
-- App talks to the HMR API at api.hmrbot.com
+- App talks to the HMR API at srv.hmrbot.com
 - UI is Persian / RTL; advisory (not decisional) tone
 
 ## Review cadence

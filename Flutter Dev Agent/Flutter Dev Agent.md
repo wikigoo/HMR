@@ -18,7 +18,7 @@
 
 ## 2. Task list
 
-- [ ] Develop app features against the HMR API (api.hmrbot.com)
+- [ ] Develop app features against the HMR API (srv.hmrbot.com)
 - [ ] Build debug/release for Android (and iOS when in scope)
 - [ ] Manage keystore rotation + Play App Signing
 - [ ] Maintain CI for build/test/release
@@ -39,7 +39,7 @@
 
 1. **Build failure** → read the error → `flutter clean && flutter pub get` → fix version/plugin conflict.
 2. **Signing error** → keystore present? `key.properties` correct? Play App Signing config valid?
-3. **App can't reach API** → base URL = api.hmrbot.com? HTTPS? CORS/cleartext policy ok?
+3. **App can't reach API** → base URL = srv.hmrbot.com? HTTPS? CORS/cleartext policy ok?
 4. **Platform-specific bug** → reproduce per platform → check permissions/manifest/Info.plist.
 5. **CI red** → reproduce the failing step locally → fix → re-run.
 
@@ -47,7 +47,7 @@
 
 - [ ] App builds (release) and runs on a device/emulator
 - [ ] Signing/keystore intact; release artifact is correctly signed
-- [ ] App talks to api.hmrbot.com successfully
+- [ ] App talks to srv.hmrbot.com successfully
 - [ ] Persian UI renders correctly (RTL) and follows advisory tone
 - [ ] Tests pass / CI green
 - [ ] Evidence captured (build log, screenshot, artifact path)
@@ -64,4 +64,4 @@ before a store release (irreversible) — needs user approval.
 
 ## 8. Supervisor handoff
 
-Supervisor re-checks: build succeeds; signing/keystore intact; app talks to api.hmrbot.com.
+Supervisor re-checks: build succeeds; signing/keystore intact; app talks to srv.hmrbot.com.

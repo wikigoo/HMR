@@ -33,7 +33,7 @@ one Supervisor agent routes and verifies work across six domain agents.
 |------|-------|
 | Live site | hmrbot.com |
 | Chat | hmrbot.com/chat |
-| Flowise backend | srv.hmrbot.com / api.hmrbot.com |
+| Flowise backend | srv.hmrbot.com |
 | VPS | Germany (Nuremberg) · Ubuntu 24.04 · 2 Core · 4 GB RAM · 40 GB · IP 91.107.159.48 |
 | AI model | [Gemini 3.1 Flash-Lite](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-1-flash-lite) via OpenRouter |
 | Frontend | Astro SSG on Cloudflare Workers |
