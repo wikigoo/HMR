@@ -9,18 +9,26 @@
 
 ## A. Verify build secrets & prerequisites exist (highest priority — current blockers)
 
-1. `[ ]` **Confirm the upload keystore exists and is safely stored.** No `android/key.properties` and no `.jks`
+1. `[~]` **Confirm the upload keystore exists and is safely stored.** No `android/key.properties` and no `.jks`
    are present locally (correct — they are gitignored). The release signing only works via CI secrets or a
    developer-supplied keystore. Locate the real upload keystore (`hmr-release.jks`) and store it in a password
    manager / secure vault. **Losing this keystore = you can never update the app again** (unless enrolled in
    Play App Signing with a separate upload key — see §C).
-2. `[ ]` **Confirm the GitHub Actions secrets are set** for `build-release.yml`:
+   → **VERIFIED 2026-06-27: no keystore on this machine and no CI secret for it (item 2 empty). Given there has
+   never been a successful build, it is very likely NO upload key exists yet — one must be generated (decision
+   pending with the owner). With Play App Signing, generating a fresh upload key now is safe.**
+2. `[~]` **Confirm the GitHub Actions secrets are set** for `build-release.yml`:
    `HMR_KEYSTORE_BASE64`, `HMR_KEY_ALIAS`, `HMR_KEY_PASSWORD`, `HMR_STORE_PASSWORD`,
    `GOOGLE_SERVICES_JSON_BASE64`, `HMR_API_TOKEN`. (Repo → Settings → Secrets and variables → Actions.)
-3. `[ ]` **Confirm the Firebase / Google project for Google Sign-In exists.** `google_sign_in` is used in
+   → **VERIFIED 2026-06-27: `gh secret list --repo wikigoo/HMR-Flutter` returns EMPTY — no secrets set.**
+   The CI references resolve to empty strings, so the keystore/google-services/token are never injected. **BLOCKER.**
+3. `[~]` **Confirm the Firebase / Google project for Google Sign-In exists.** `google_sign_in` is used in
    `lib/providers/auth_provider.dart`, and the `com.google.gms.google-services` Gradle plugin is applied, so
    `android/app/google-services.json` is **mandatory** — without it the release build fails. Obtain it from the
    Firebase console for package `ir.hmrbot.app` and store as the base64 secret above.
+   → **VERIFIED 2026-06-27: a local `flutter build apk --debug` FAILS at `:app:processDebugGoogleServices` with
+   "File google-services.json is missing." This is the #1 hard blocker — no build of any type can succeed until
+   a real Firebase config for `ir.hmrbot.app` is added. Cannot be fabricated; requires a Firebase project. BLOCKER.**
 4. `[ ]` **Record the SHA-1 / SHA-256 signing fingerprints** of the upload key in the Firebase project (required
    for Google Sign-In to work in the signed build).
 5. `[ ]` **Create a local `android/key.properties`** (for any developer doing local release builds) with
@@ -28,8 +36,13 @@
 
 ## B. Produce and verify a real signed build (no evidence one exists yet)
 
-6. `[ ]` **Run a debug build first** to confirm the project compiles: `flutter pub get` then
+6. `[x]` **Run a debug build first** to confirm the project compiles: `flutter pub get` then
    `flutter build apk --debug`. Fix any compile/plugin errors.
+   → **DONE 2026-06-27 (code verified clean):** `flutter pub get` OK (48+ deps) · `flutter analyze` → **No issues
+   found!** · `flutter test` → **All tests passed** · `flutter doctor` → No issues (Android SDK 36.1.0 present,
+   Flutter 3.44.2). The Dart/Flutter code itself compiles and is static-clean. The *build* still fails only on the
+   missing `google-services.json` (item 3), not on app code. Minor warning to address later: `package_info_plus`
+   and `sentry_flutter` apply the legacy Kotlin Gradle Plugin (future-Flutter deprecation).
 7. `[ ]` **Run the release build path** that Play needs — an App Bundle, signed:
    `flutter build appbundle --release` (with keystore + `google-services.json` present, plus
    `--dart-define=HMR_API_TOKEN=...`). Output: `build/app/outputs/bundle/release/app-release.aab`.
@@ -38,8 +51,13 @@
 9. `[ ]` **Smoke-test the release artifact on a real device** (build an APK from the bundle with `bundletool`
    or use `flutter build apk --release`): app launches, Persian RTL renders, chat reaches
    `https://srv.hmrbot.com`, Google Sign-In works, and the price disclaimer shows.
-10. `[ ]` **Trigger the CI workflow** (`build-release.yml`) on `main` and confirm a green run + uploaded AAB
+10. `[~]` **Trigger the CI workflow** (`build-release.yml`) on `main` and confirm a green run + uploaded AAB
     artifact. Log the result in `Flutter Dev Agent/Reports/REPORT-LOG.md`.
+    → **VERIFIED 2026-06-27: the only CI run to date (2026-06-24, run 28072804210) FAILED.** Two causes: (a) the
+    workflow does not accept Android SDK licenses → `LicenceNotAcceptedException: Failed to install Android SDK
+    packages as some licences have not been accepted`; (b) secrets are empty (item 2). **Fix needed:** add an
+    SDK-license-accept step (e.g. `android-actions/setup-android` or `yes | sdkmanager --licenses`) AND populate
+    the secrets, then re-run.
 
 ## C. Google Play Console — account, app, and signing setup
 
@@ -118,3 +136,61 @@ Iran-distribution decision unmade (§G).
 **Supervisor verdict:** `Needs-work — not ready to publish`. The build/signing foundation is solid; publishing
 is gated on verifying secrets, producing one green signed build, completing Console requirements, and resolving
 the Iran-distribution question.
+
+---
+
+## Progress log
+
+### 2026-06-27 — First execution pass (Supervisor → Flutter (3))
+
+**Environment confirmed:** Flutter 3.44.2 (stable), Dart 3.12.2, Android SDK 36.1.0, `flutter doctor` → No
+issues. `gh` authenticated as `wikigoo`. Real app repo at `D:\.HMR\HMR-Flutter` (remote
+`github.com/wikigoo/HMR-Flutter`, latest commit `4f3803f` "full production hardening").
+
+**Completed / verified:**
+- ✅ Item 6 — code compiles clean: `pub get` OK · `flutter analyze` = **No issues found** · `flutter test` = **passed**.
+- ✅ Item 2 — confirmed **no GitHub Actions secrets exist** (`gh secret list` empty). BLOCKER.
+- ✅ Item 3 — confirmed **`google-services.json` missing**; debug build fails at `processDebugGoogleServices`. BLOCKER.
+- ✅ Item 10 — confirmed **only CI run (2026-06-24) failed** on Android-SDK-license acceptance + empty secrets.
+- ✅ Item 1 — confirmed no local keystore; an upload key almost certainly does not exist yet.
+
+**Stopped here — remaining items need owner inputs/decisions that cannot be produced autonomously:**
+1. **Firebase project + `google-services.json`** for `ir.hmrbot.app` (item 3) — cannot be fabricated; must come
+   from a real Firebase project. *Alternatively*, if Google Sign-In is not essential, removing `google_sign_in`
+   + the `google-services` plugin eliminates this blocker **and** the Data-safety/account-deletion burden (§E 22–23).
+2. **Upload keystore** (items 1, 5) — owner to provide an existing one, or approve generating a fresh upload key now.
+3. **Populate GitHub secrets** (item 2) — needs the keystore + google-services + API token values.
+4. **CI workflow fix** (item 10) — safe code change available now (add SDK-license-accept step); awaiting go-ahead.
+5. **Play Console + listing + policy forms** (§C–F) and **Iran-distribution decision** (§G) — owner-side.
+
+**Next safe autonomous action available on request:** fix `build-release.yml` (SDK licenses) and/or generate a
+fresh upload keystore + `key.properties`.
+
+### 2026-06-27 — Second pass: FIRST GREEN BUILD achieved
+
+User provided the real `android/app/google-services.json` (Firebase project `ir-hmrbot-app`, package
+`ir.hmrbot.app`, registered SHA-1 `d5:8e:72:36:…:a5:f9`). With it installed, I drove `flutter build apk --debug`
+through a multi-layer native-build chain and **succeeded**:
+`√ Built build\app\outputs\flutter-apk\app-debug.apk` (157 MB debug artifact). Item 6 = **DONE (build verified)**.
+
+**Fixes applied to `HMR-Flutter` to get the green build (all uncommitted):**
+1. `android/app/google-services.json` — installed (gitignored). Cleared the #1 blocker.
+2. `android/gradle.properties` — `kotlin.incremental=false` (fixes Windows "Could not close incremental caches").
+3. `pubspec.yaml` — `sentry_flutter ^8.14.0 → ^9.0.0` (Dart API unchanged; `flutter analyze` clean).
+4. `android/build.gradle.kts` — a `subprojects` override forcing every module (incl. `:jni` from sentry) onto the
+   locally-installed toolchain: NDK `30.0.14904198`, build-tools `36.1.0`, `compileSdk 36`, and Kotlin
+   `languageVersion/apiVersion = 2.0` (plugins like sentry still request the unsupported Kotlin 1.6).
+
+**🔴 CRITICAL ENVIRONMENT FINDING — Google SDK downloads are blocked on this network (Iran).**
+`sdkmanager` failed with `Failed to download any source lists! IO exception while downloading manifest` when
+trying to fetch NDK 28.2 / platform `android-31`. **Consequence:** local release builds can only use SDK
+components already installed (platforms 33/34/36/36.1, build-tools 30.0.3/36.0.0/36.1.0/37.0.0, NDK
+30.0.14904198). This is WHY the override-to-installed-versions approach was necessary. (GitHub-hosted CI is
+NOT affected — it can download SDK components — so the same project also builds in Actions once secrets exist.)
+
+**Still blocked / pending owner decisions:**
+- **Release AAB (item 7 proper)** needs the upload keystore (item 1). `keytool` is available locally (JDK 21 at
+  Android Studio JBR) and needs **no download**, so a fresh upload key can be generated offline on request.
+- Items 2 (GitHub secrets), §C–F (Play Console), §G (Iran distribution) remain owner-side.
+- Minor: register the **release/upload key SHA-1** in Firebase too (only the current SHA-1 is registered), or
+  Google Sign-In will fail on the signed build.
