@@ -20,7 +20,7 @@
 
 - [ ] Build the Astro SSG site and deploy to Cloudflare Workers
 - [ ] Manage Cloudflare DNS for hmrbot.com and subdomains
-- [ ] Maintain the /chat page and its embed/connection to api.hmrbot.com
+- [ ] Maintain the /chat page and its embed/connection to srv.hmrbot.com
 - [ ] Keep SSL valid and CORS correct between frontend and backend
 - [ ] Roll back a bad deploy quickly
 - [ ] Track Core Web Vitals / page performance
@@ -40,13 +40,13 @@
 1. **Deploy failed** → read `wrangler deploy` output → fix build/config → redeploy.
 2. **Site down / 5xx** → check Cloudflare Workers status + DNS proxy state → rollback to last good version.
 3. **DNS not resolving** → verify A/CNAME records + proxy (orange cloud) in Cloudflare.
-4. **/chat can't reach backend** → check request URL = api.hmrbot.com → check **CORS** headers and **SSL** cert validity → confirm with DevOps the backend is up.
+4. **/chat can't reach backend** → check request URL = srv.hmrbot.com → check **CORS** headers and **SSL** cert validity → confirm with DevOps the backend is up.
 5. **Mixed content / SSL error** → ensure all calls are HTTPS and the cert covers the subdomain.
 
 ## 5. Analysis & review checklist (quality gate)
 
 - [ ] Site builds with no errors and deploys successfully
-- [ ] Deploy URL is live; /chat loads and connects to api.hmrbot.com
+- [ ] Deploy URL is live; /chat loads and connects to srv.hmrbot.com
 - [ ] No CORS or SSL errors in the browser console
 - [ ] Rollback path identified before any production deploy
 - [ ] HMR global rules respected (Persian UI copy, advisory tone)
@@ -65,4 +65,4 @@ After every session, append an entry to [`Reports/REPORT-LOG.md`](Reports/REPORT
 
 ## 8. Supervisor handoff
 
-Supervisor re-checks: deploy URL live; /chat loads; no CORS/SSL errors to api.hmrbot.com; rollback path noted.
+Supervisor re-checks: deploy URL live; /chat loads; no CORS/SSL errors to srv.hmrbot.com; rollback path noted.

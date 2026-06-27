@@ -44,14 +44,14 @@
 2. **RAG miss** (no source used) → document indexed? retriever wired? embedding model matches? top-k ok?
 3. **Model error / empty reply** → OpenRouter key + model id valid? quota? check the LLM node config.
 4. **Flow-state leak across turns** → verify state scope/reset; don't carry one user's context into another.
-5. **Wrong flow live** → confirm the deployed flow is **V6**; re-import the correct JSON if not.
+5. **Wrong flow live** → confirm the deployed flow is **`HMR-Agentflows-v2`**; re-import the correct JSON if not.
 
 ## 5. Analysis & review checklist (quality gate)
 
 - [ ] Answer is in **Persian**, honest (no fabricated specs/prices), and advisory-not-decisional
 - [ ] **Live-price-only** respected (no prices from model memory)
 - [ ] RAG cites the intended knowledge; no hallucinated sources
-- [ ] Running the correct flow version (V6) and the JSON is exported to `HMR-Chatbot/`
+- [ ] Running the correct active flow (`HMR-Agentflows-v2`) and the JSON is exported to `HMR-Chatbot/`
 - [ ] Tested via Prediction API with a representative query
 - [ ] Evidence captured (sample Q/A, node trace, exported JSON path)
 
@@ -69,4 +69,4 @@ export the updated flow JSON and reference it in the report.
 
 ## 8. Supervisor handoff
 
-Supervisor re-checks: answer is Persian + honest + live-price-only; correct flow version (V6); flow JSON exported.
+Supervisor re-checks: answer is Persian + honest + live-price-only; correct active flow (`HMR-Agentflows-v2`); flow JSON exported.

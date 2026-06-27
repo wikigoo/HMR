@@ -14,16 +14,25 @@ tasks, tools, checklists, and where to log the work.
 ## Boot sequence (AI assistant — do this in order)
 
 1. **Read this file** — boot sequence, global rules, roster.
-2. **Act as the Supervisor first.** Classify the task and pick the owning agent(s) using the routing
-   table in [`Supervisor Agent.md`](Supervisor%20Agent.md).
-3. **Open that agent's manual** (`<Agent>/<Agent>.md`) — 8 sections: Identity/scope · Task list ·
+2. **On the first interaction of the session, sync from the source repo.** "First interaction" = the
+   first user message / request / prompt that invokes HMR. Before doing the work, check the GitHub repo
+   **[`github.com/wikigoo/HMR`](https://github.com/wikigoo/HMR)** — especially **`README.md`** and the
+   **`To do/`** folder — and reconcile local facts against it. The repo is the published source of truth:
+   if a local file disagrees with the repo, flag it and use the verified value. (Do **not** auto-`pull`;
+   apply changes deliberately under the owning agent.)
+3. **Act as the Supervisor first.** Classify the task and pick the owning agent(s) using the routing
+   table in [`Supervisor Agent.md`](Supervisor%20Agent.md). **Every handoff must spell out what the
+   sub-agent needs to run the request correctly** — at minimum: read its `Knowledge/_INDEX.md` first,
+   follow its Toolbox (§3) + Debug checklist (§4), and respect the HMR global rules. See the Supervisor
+   manual → *Handoff briefing*.
+4. **Open that agent's manual** (`<Agent>/<Agent>.md`) — 8 sections: Identity/scope · Task list ·
    Toolbox · Debug checklist · Review checklist · Reporting · Knowledge workflow · Supervisor handoff.
-4. **Read that agent's `Knowledge/_INDEX.md`** for HMR facts **before acting** — never assume.
-5. **Do the work** using the agent's Toolbox + Debug checklist.
-6. **Self-review** against the agent's section-5 checklist (including the global rules below).
-7. **Write a report** in `<Agent>/Reports/REPORT-LOG.md` (template: `_TEMPLATE/_session-report-template.md`).
-8. **Verify as Supervisor** via the verification matrix; record a verdict in [`Reports/SESSION-SUMMARY.md`](Reports/SESSION-SUMMARY.md).
-9. **Update the Knowledge base** if any fact changed.
+5. **Read that agent's `Knowledge/_INDEX.md`** for HMR facts **before acting** — never assume.
+6. **Do the work** using the agent's Toolbox + Debug checklist.
+7. **Self-review** against the agent's section-5 checklist (including the global rules below).
+8. **Write a report** in `<Agent>/Reports/REPORT-LOG.md` (template: `_TEMPLATE/_session-report-template.md`).
+9. **Verify as Supervisor** via the verification matrix; record a verdict in [`Reports/SESSION-SUMMARY.md`](Reports/SESSION-SUMMARY.md).
+10. **Update the Knowledge base** if any fact changed.
 
 If the task is ambiguous or would break a global rule, **ask before acting**.
 
@@ -56,7 +65,7 @@ If the task is ambiguous or would break a global rule, **ask before acting**.
 | 1 | [`Supervisor Agent.md`](Supervisor%20Agent.md) | **Supervisor — Router & QA Gate** | Route requests, verify sub-agent output, consolidate reports |
 | 3 | [`Flutter Dev Agent`](Flutter%20Dev%20Agent/Flutter%20Dev%20Agent.md) | **Mobile — Flutter** | Android/iOS app, signing/CI, store release |
 | 4 | [`Astro Web Agent`](Astro%20Web%20Agent/Astro%20Web%20Agent.md) | **Web — Astro + Cloudflare** | Site at hmrbot.com, /chat embed, deploy/rollback |
-| 5 | [`Flowise AI Agent`](Flowise%20AI%20Agent/Flowise%20AI%20Agent.md) | **Conversational AI / Chatflow** | AgentFlow V2, RAG, prompts, OpenRouter, flow JSON |
+| 5 | [`Flowise AI Agent`](Flowise%20AI%20Agent/Flowise%20AI%20Agent.md) | **Conversational AI / Chatflow** | AgentFlow V2 chatflow `HMR-Agentflows-v2`, RAG, prompts, OpenRouter, flow JSON |
 | 6 | [`DevOps Agent`](DevOps%20Agent/DevOps%20Agent.md) | **Infrastructure & Ops** | VPS, Docker, Flowise uptime, networking, backups |
 | 7 | [`Backend & DB Agent`](Backend%20&%20DB%20Agent/Backend%20&%20DB%20Agent.md) | **Backend & Data** | APIs, data models, price/spec data, integrations |
 | 8 | [`Growth & Marketing Agent`](Growth%20&%20Marketing%20Agent/Growth%20&%20Marketing%20Agent.md) | **Growth & Marketing** | Market, business plan, content, launch/GTM |
@@ -84,7 +93,7 @@ Start a new agent from [`_TEMPLATE/Agent-Template.md`](_TEMPLATE/Agent-Template.
 |------|-------|
 | Live site | hmrbot.com |
 | Chat | hmrbot.com/chat |
-| Flowise backend | srv.hmrbot.com / api.hmrbot.com |
+| Flowise backend | srv.hmrbot.com |
 | VPS | Germany (Nuremberg) · Ubuntu 24.04 · 2 Core · 4 GB RAM · 40 GB · IP 91.107.159.48 |
 | AI model | Gemini 3.1 Flash-Lite via OpenRouter |
 | Frontend | Astro SSG on Cloudflare Workers |
