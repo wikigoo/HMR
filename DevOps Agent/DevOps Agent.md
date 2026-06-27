@@ -15,8 +15,11 @@
 | **HMR-tools skill** | `hmr-server` |
 | **Host** | Germany (Nuremberg) · Ubuntu 24.04 · 2 Core · 4 GB RAM · 40 GB · Docker · IP `91.107.159.48` (root, SSH key `HMRBOT`) |
 
-> ⚠️ **No automated backup or snapshot is configured on this VPS.** This agent's protocol requires a
-> backup before state changes — set up backups/snapshots as a priority, or take a manual backup first.
+> ✅ **Local automated backup is configured & verified (2026-06-27):** `/root/backup_flowise.sh`
+> (daily cron `30 3 * * *`) archives `~/.flowise` to `/root/backups/`, integrity-checks it, and keeps the
+> 14 newest. ⚠️ **Still no off-site copy and no provider snapshot** — backups sit on the same VPS, so a
+> host/disk loss loses them too. Off-site DR is the next priority; for now take an off-host copy before
+> high-risk state changes.
 
 ## 2. Task list
 

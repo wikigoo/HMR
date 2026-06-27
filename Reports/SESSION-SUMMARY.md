@@ -6,6 +6,23 @@
 
 ---
 
+## 2026-06-27 — Closed the two follow-ups (image prune + backup)
+
+- **Request:** Execute the two open follow-ups from the Flowise-version session.
+- **Agents engaged:** Supervisor (verify) → **DevOps (6)**.
+- **Done #1 — image prune:** removed unused `flowiseai/flowise:latest` (2026-04-14) from the VPS;
+  reclaimed ≈5.39 GB. Running image `flowiseai/flowise:3.1.3` untouched (healthy).
+- **Done #2 — backup verified:** the "no backup" risk was **also stale**. A working setup already
+  exists: `/root/backup_flowise.sh` (tars `~/.flowise`, `gzip -t`, keeps 14 newest) + cron daily 03:30.
+  Ran it once on demand → `flowise_20260627_170145.tar.gz`, `GZIP_OK`, archive confirmed to hold
+  `database.sqlite` + secret keys + `faiss/` RAG indexes. KB + DevOps manual updated to reflect this.
+- **User decision:** local backup is sufficient for now; off-site/snapshot deferred.
+- **Remaining open risk:** **no off-site copy / provider snapshot** — backups live on the same VPS,
+  so a host/disk loss loses them too. Off-site DR is the next DevOps priority.
+- **Verdict:** Approved (both follow-ups closed; one residual DR gap logged).
+
+---
+
 ## 2026-06-27 — Flowise 3.1.2→3.1.3 "upgrade" request — verified already done
 
 - **Request:** Investigate upgrading Flowise from 3.1.2 to 3.1.3 (claim: running image is one patch
