@@ -14,9 +14,9 @@
    developer-supplied keystore. Locate the real upload keystore (`hmr-release.jks`) and store it in a password
    manager / secure vault. **Losing this keystore = you can never update the app again** (unless enrolled in
    Play App Signing with a separate upload key — see §C).
-   → **VERIFIED 2026-06-27: no keystore on this machine and no CI secret for it (item 2 empty). Given there has
-   never been a successful build, it is very likely NO upload key exists yet — one must be generated (decision
-   pending with the owner). With Play App Signing, generating a fresh upload key now is safe.**
+   → **DONE 2026-06-27: generated a fresh upload keystore offline** at `android/app/hmr-release.jks`
+   (alias `hmr`, RSA 2048, valid to 2053). Password was shared with the owner in-session — **must be stored in a
+   password manager / vault now.** Keystore is gitignored (`**/*.jks`).
 2. `[~]` **Confirm the GitHub Actions secrets are set** for `build-release.yml`:
    `HMR_KEYSTORE_BASE64`, `HMR_KEY_ALIAS`, `HMR_KEY_PASSWORD`, `HMR_STORE_PASSWORD`,
    `GOOGLE_SERVICES_JSON_BASE64`, `HMR_API_TOKEN`. (Repo → Settings → Secrets and variables → Actions.)
@@ -29,10 +29,18 @@
    → **VERIFIED 2026-06-27: a local `flutter build apk --debug` FAILS at `:app:processDebugGoogleServices` with
    "File google-services.json is missing." This is the #1 hard blocker — no build of any type can succeed until
    a real Firebase config for `ir.hmrbot.app` is added. Cannot be fabricated; requires a Firebase project. BLOCKER.**
-4. `[ ]` **Record the SHA-1 / SHA-256 signing fingerprints** of the upload key in the Firebase project (required
+4. `[~]` **Record the SHA-1 / SHA-256 signing fingerprints** of the upload key in the Firebase project (required
    for Google Sign-In to work in the signed build).
-5. `[ ]` **Create a local `android/key.properties`** (for any developer doing local release builds) with
+   → **ACTION REQUIRED:** the new upload key's SHA-1 **`D9:78:BB:EC:2F:68:44:13:3D:E1:3B:BC:36:6F:93:5D:54:AF:7F:C8`**
+   (and SHA-256 `8D:7C:F6:47:CD:BB:6C:03:B9:A8:38:25:2F:83:32:63:C4:C0:60:E6:71:FA:0C:64:11:2C:D5:85:6E:07:CD:06`)
+   is **NOT yet in Firebase** — only the earlier SHA-1 `d5:8e:72:36:…` is. Add it at Firebase console →
+   project `ir-hmrbot-app` → Android app `ir.hmrbot.app` → "Add fingerprint", then re-download
+   `google-services.json`. Until then, **Google Sign-In will fail on the release-signed build.** (Also add
+   Play App Signing's key SHA-1 once enrolled — see §C 13.)
+5. `[x]` **Create a local `android/key.properties`** (for any developer doing local release builds) with
    `storeFile`, `storePassword`, `keyAlias`, `keyPassword`. Confirm it stays gitignored.
+   → **DONE 2026-06-27:** `android/key.properties` created (alias `hmr`, `storeFile=hmr-release.jks`),
+   confirmed gitignored.
 
 ## B. Produce and verify a real signed build (no evidence one exists yet)
 
@@ -43,9 +51,14 @@
    Flutter 3.44.2). The Dart/Flutter code itself compiles and is static-clean. The *build* still fails only on the
    missing `google-services.json` (item 3), not on app code. Minor warning to address later: `package_info_plus`
    and `sentry_flutter` apply the legacy Kotlin Gradle Plugin (future-Flutter deprecation).
-7. `[ ]` **Run the release build path** that Play needs — an App Bundle, signed:
+7. `[x]` **Run the release build path** that Play needs — an App Bundle, signed:
    `flutter build appbundle --release` (with keystore + `google-services.json` present, plus
    `--dart-define=HMR_API_TOKEN=...`). Output: `build/app/outputs/bundle/release/app-release.aab`.
+   → **DONE 2026-06-27:** generated a fresh upload keystore offline with `keytool`
+   (`android/app/hmr-release.jks`, alias `hmr`, valid to 2053, SHA-1
+   `D9:78:BB:EC:2F:68:44:13:3D:E1:3B:BC:36:6F:93:5D:54:AF:7F:C8`), wrote `android/key.properties`, and built
+   **`app-release.aab` (54.8 MB, minified)**. `jarsigner -verify` → **"jar verified."** Both keystore and
+   key.properties are gitignored. **Store the keystore password securely (shared with the owner).**
 8. `[ ]` **Verify the AAB is correctly signed** (e.g. `jarsigner -verify` / `bundletool`), and that
    `versionCode`/`versionName` (currently `1.0.0+1`) are correct and will increment on every upload.
 9. `[ ]` **Smoke-test the release artifact on a real device** (build an APK from the bundle with `bundletool`
