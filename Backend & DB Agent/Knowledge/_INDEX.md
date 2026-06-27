@@ -4,7 +4,8 @@
 
 | File | Purpose | Last reviewed |
 |---|---|---|
-| _(none yet — add API/schema/data-source docs)_ | | |
+| [`../Server-Status-Report-SOP.md`](../Server-Status-Report-SOP.md) | On-demand server status report runbook (read-only host/Docker/Flowise/DB/network/backup/security diagnostics) | 2026-06-27 |
+| _(add API/schema/data-source docs here)_ | | |
 
 ## HMR facts this agent relies on
 
