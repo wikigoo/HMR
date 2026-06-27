@@ -61,9 +61,13 @@
    key.properties are gitignored. **Store the keystore password securely (shared with the owner).**
 8. `[ ]` **Verify the AAB is correctly signed** (e.g. `jarsigner -verify` / `bundletool`), and that
    `versionCode`/`versionName` (currently `1.0.0+1`) are correct and will increment on every upload.
-9. `[ ]` **Smoke-test the release artifact on a real device** (build an APK from the bundle with `bundletool`
+9. `[~]` **Smoke-test the release artifact on a real device** (build an APK from the bundle with `bundletool`
    or use `flutter build apk --release`): app launches, Persian RTL renders, chat reaches
    `https://srv.hmrbot.com`, Google Sign-In works, and the price disclaimer shows.
+   → **DONE 2026-06-27 (emulator):** built signed `app-release.apk` (56.4 MB), clean-installed on the Pixel_6
+   AVD, launched as foreground `ir.hmrbot.app/.MainActivity` with **no crashes**. Screenshot confirms the
+   conversations screen renders correctly in Persian RTL (neon/glass theme). **Not yet checked on a physical
+   device, and Google Sign-In not exercised** (its SHA-1 isn't in Firebase yet — item 4) — verify both before release.
 10. `[~]` **Trigger the CI workflow** (`build-release.yml`) on `main` and confirm a green run + uploaded AAB
     artifact. Log the result in `Flutter Dev Agent/Reports/REPORT-LOG.md`.
     → **VERIFIED 2026-06-27: the only CI run to date (2026-06-24, run 28072804210) FAILED.** Two causes: (a) the
