@@ -29,14 +29,15 @@
    → **VERIFIED 2026-06-27: a local `flutter build apk --debug` FAILS at `:app:processDebugGoogleServices` with
    "File google-services.json is missing." This is the #1 hard blocker — no build of any type can succeed until
    a real Firebase config for `ir.hmrbot.app` is added. Cannot be fabricated; requires a Firebase project. BLOCKER.**
-4. `[~]` **Record the SHA-1 / SHA-256 signing fingerprints** of the upload key in the Firebase project (required
+4. `[x]` **Record the SHA-1 / SHA-256 signing fingerprints** of the upload key in the Firebase project (required
    for Google Sign-In to work in the signed build).
-   → **ACTION REQUIRED:** the new upload key's SHA-1 **`D9:78:BB:EC:2F:68:44:13:3D:E1:3B:BC:36:6F:93:5D:54:AF:7F:C8`**
-   (and SHA-256 `8D:7C:F6:47:CD:BB:6C:03:B9:A8:38:25:2F:83:32:63:C4:C0:60:E6:71:FA:0C:64:11:2C:D5:85:6E:07:CD:06`)
-   is **NOT yet in Firebase** — only the earlier SHA-1 `d5:8e:72:36:…` is. Add it at Firebase console →
-   project `ir-hmrbot-app` → Android app `ir.hmrbot.app` → "Add fingerprint", then re-download
-   `google-services.json`. Until then, **Google Sign-In will fail on the release-signed build.** (Also add
-   Play App Signing's key SHA-1 once enrolled — see §C 13.)
+   → **DONE 2026-06-28:**
+   - SHA-1 `D9:78:BB:EC:2F:68:44:13:3D:E1:3B:BC:36:6F:93:5D:54:AF:7F:C8` added to **Firebase Console**
+     (project `ir-hmrbot-app` → Android app `ir.hmrbot.app` → SHA fingerprints).
+   - Same SHA-1 added to **Google Cloud Console** → OAuth 2.0 Client ID (Android client for ir.hmrbot.app,
+     `829078792642-og77...`, created Jun 27 2026). "OAuth client saved" confirmed.
+   - Note: Google Cloud Console Android OAuth only accepts SHA-1 (no SHA-256 field — this is normal).
+   - ⚠️ After enrolling in Play App Signing (§C item 13), add Play's delivery key SHA-1 here too.
 5. `[x]` **Create a local `android/key.properties`** (for any developer doing local release builds) with
    `storeFile`, `storePassword`, `keyAlias`, `keyPassword`. Confirm it stays gitignored.
    → **DONE 2026-06-27:** `android/key.properties` created (alias `hmr`, `storeFile=hmr-release.jks`),
@@ -59,8 +60,11 @@
    `D9:78:BB:EC:2F:68:44:13:3D:E1:3B:BC:36:6F:93:5D:54:AF:7F:C8`), wrote `android/key.properties`, and built
    **`app-release.aab` (54.8 MB, minified)**. `jarsigner -verify` → **"jar verified."** Both keystore and
    key.properties are gitignored. **Store the keystore password securely (shared with the owner).**
-8. `[ ]` **Verify the AAB is correctly signed** (e.g. `jarsigner -verify` / `bundletool`), and that
+8. `[x]` **Verify the AAB is correctly signed** (e.g. `jarsigner -verify` / `bundletool`), and that
    `versionCode`/`versionName` (currently `1.0.0+1`) are correct and will increment on every upload.
+   → **DONE 2026-06-27 (second pass):** `jarsigner -verify app-release.aab` → **"jar verified."**
+   `versionCode = flutter.versionCode` / `versionName = flutter.versionName` in `build.gradle.kts`
+   (maps to `1.0.0+1` in `pubspec.yaml`). ⚠️ Manually increment `version:` in `pubspec.yaml` before each upload.
 9. `[~]` **Smoke-test the release artifact on a real device** (build an APK from the bundle with `bundletool`
    or use `flutter build apk --release`): app launches, Persian RTL renders, chat reaches
    `https://srv.hmrbot.com`, Google Sign-In works, and the price disclaimer shows.
@@ -139,20 +143,27 @@
 
 ---
 
-## Quick status snapshot (as of 2026-06-27)
+## Quick status snapshot (as of 2026-06-28)
 
 **Already in good shape (verified in code):** `applicationId ir.hmrbot.app` · `targetSdk/compileSdk 36` ·
-version `1.0.0+1` · release minify/shrink/proguard · HTTPS API (`srv.hmrbot.com`) · real chatflow ID ·
-clean manifest (only `INTERNET`, `allowBackup=false`) · custom launcher icon + splash · signed-AAB CI workflow ·
-secrets correctly gitignored.
+Flutter 3.44.2 · version `1.0.0+1` · release minify/shrink/proguard · HTTPS API (`srv.hmrbot.com`) ·
+real chatflow ID · clean manifest (only `INTERNET`, `allowBackup=false`) · custom launcher icon + splash ·
+signed-AAB CI workflow · secrets correctly gitignored · signed `app-release.aab` verified (`jarsigner`) ·
+emulator smoke-test passed · UI improvements applied (thumbs-up/down, copy button, 5-card empty state,
+sticky glass disclaimer).
 
-**Hard blockers right now:** keystore + `google-services.json` existence unconfirmed (items 1–3) ·
-no evidence of a successful signed build (items 6–10) · all Play Console forms/listing pending (§C–F) ·
-Iran-distribution decision unmade (§G).
+**Completed items (§A–B):** 5 ✅ · 6 ✅ · 7 ✅ · 8 ✅ · 9 🔶 (emulator only) · 1 🔶 · 2 🔶 · 3 🔶 · 4 🔶 · 10 🔶
 
-**Supervisor verdict:** `Needs-work — not ready to publish`. The build/signing foundation is solid; publishing
-is gated on verifying secrets, producing one green signed build, completing Console requirements, and resolving
-the Iran-distribution question.
+**Hard blockers right now:**
+- Item 2 — GitHub Actions secrets still **empty** (BLOCKER for CI)
+- Item 4 — release key SHA-1/256 **not yet added to Firebase** (BLOCKER for Google Sign-In on release)
+- Item 10 — CI workflow still fails (SDK license + empty secrets)
+- §C–F — all Play Console, listing, and policy forms pending (owner-side)
+- §G — Iran-distribution decision unmade
+
+**Supervisor verdict:** `Needs-work — not ready to publish`. Build + signing foundation solid.
+Next owner actions: (1) add SHA fingerprints to Firebase · (2) populate GitHub secrets · (3) fix CI workflow ·
+(4) decide distribution channel (§G).
 
 ---
 
@@ -211,3 +222,31 @@ NOT affected — it can download SDK components — so the same project also bui
 - Items 2 (GitHub secrets), §C–F (Play Console), §G (Iran distribution) remain owner-side.
 - Minor: register the **release/upload key SHA-1** in Firebase too (only the current SHA-1 is registered), or
   Google Sign-In will fail on the signed build.
+
+### 2026-06-28 — UI/UX improvements + checklist audit (Supervisor → Flutter (3))
+
+**flutter_markdown_plus confirmed correct:** attempted to swap to `flutter_markdown` (believing it was newer),
+but `flutter pub get` revealed `flutter_markdown 0.7.7+1` is itself **discontinued → replaced by
+`flutter_markdown_plus`**. Reverted `pubspec.yaml` and `chat_bubble.dart` back to
+`flutter_markdown_plus: ^1.0.7`. `flutter pub get` re-run and confirmed clean (no warnings on this package).
+
+**UI improvements applied and verified in code (all 4 changes confirmed in actual files):**
+1. **Thumbs-up / thumbs-down / copy buttons** added to AI chat bubbles (`chat_bubble.dart`).
+   `onThumbsUp`, `onThumbsDown` params wired in `chat_screen.dart` with snackbar feedback.
+   Addresses GenAI feedback-mechanism requirement.
+2. **5-card graphical empty state** replaces plain welcome text (`chat_screen.dart`).
+   Cards: گوشی نو · گوشی دست دوم · عیب‌یابی · آموزش سخت‌افزار · لوازم جانبی.
+   Tapping sends a ready-made Persian prompt.
+3. **Sticky glass disclaimer banner** (`price_disclaimer.dart` rewritten with `BackdropFilter`).
+   Positioned at top of chat area (below AppBar), always visible, minimal height. Compact variant in empty state.
+4. **Report button** (existing) converted to icon-only (`Icons.outlined_flag`) for cleaner layout.
+
+**Item 8 status corrected:** `jarsigner -verify` result from second pass (2026-06-27) was "jar verified" —
+item 8 updated to `[x]`.
+
+**`flutter pub get` output (2026-06-28):**
+- `+ flutter_markdown_plus 1.0.7` ✅
+- `- flutter_markdown` removed ✅
+- `flutter 3.44.2`, `compileSdk/targetSdk 36` confirmed.
+
+**No new blockers introduced. No §C–F items advanced (all remain owner-side).**
