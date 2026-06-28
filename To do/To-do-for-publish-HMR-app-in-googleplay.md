@@ -4,6 +4,13 @@
 > **Owner:** Mobile — Flutter (3). **Verified by:** Supervisor.
 > **Status legend:** `[ ]` not done · `[~]` partially done / unverified · `[x]` done.
 > **Created:** 2026-06-27. Based on a live, evidence-based review of the actual repo (not just docs).
+>
+> **Hardening pass (2026-06-27/28):** verified the 4 "technical-debt" claims against code. Fixed in
+> [HMR-Flutter#2](https://github.com/wikigoo/HMR-Flutter/pull/2): (1) added a **report button** on AI answers
+> (GenAI policy), (2) migrated **`flutter_markdown` → `flutter_markdown_plus`**. The **API-token-in-binary**
+> issue has a design plan in `API-Token-Hardening-Plan.md`. ⚠️ Correction: the claim that signing keys are in
+> git history is **false for this repo** — a full-history search found none, so no BFG/history purge is needed.
+> The production-key SHA-1 is now registered in Firebase (Google Sign-In works on the signed build).
 
 ---
 
