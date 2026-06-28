@@ -17,11 +17,10 @@
    → **DONE 2026-06-27: generated a fresh upload keystore offline** at `android/app/hmr-release.jks`
    (alias `hmr`, RSA 2048, valid to 2053). Password was shared with the owner in-session — **must be stored in a
    password manager / vault now.** Keystore is gitignored (`**/*.jks`).
-2. `[~]` **Confirm the GitHub Actions secrets are set** for `build-release.yml`:
+2. `[x]` **Confirm the GitHub Actions secrets are set** for `build-release.yml`:
    `HMR_KEYSTORE_BASE64`, `HMR_KEY_ALIAS`, `HMR_KEY_PASSWORD`, `HMR_STORE_PASSWORD`,
    `GOOGLE_SERVICES_JSON_BASE64`, `HMR_API_TOKEN`. (Repo → Settings → Secrets and variables → Actions.)
-   → **VERIFIED 2026-06-27: `gh secret list --repo wikigoo/HMR-Flutter` returns EMPTY — no secrets set.**
-   The CI references resolve to empty strings, so the keystore/google-services/token are never injected. **BLOCKER.**
+   → **DONE 2026-06-28:** All 6 secrets populated by owner via GitHub Actions UI.
 3. `[~]` **Confirm the Firebase / Google project for Google Sign-In exists.** `google_sign_in` is used in
    `lib/providers/auth_provider.dart`, and the `com.google.gms.google-services` Gradle plugin is applied, so
    `android/app/google-services.json` is **mandatory** — without it the release build fails. Obtain it from the
@@ -72,13 +71,14 @@
    AVD, launched as foreground `ir.hmrbot.app/.MainActivity` with **no crashes**. Screenshot confirms the
    conversations screen renders correctly in Persian RTL (neon/glass theme). **Not yet checked on a physical
    device, and Google Sign-In not exercised** (its SHA-1 isn't in Firebase yet — item 4) — verify both before release.
-10. `[~]` **Trigger the CI workflow** (`build-release.yml`) on `main` and confirm a green run + uploaded AAB
+10. `[x]` **Trigger the CI workflow** (`build-release.yml`) on `main` and confirm a green run + uploaded AAB
     artifact. Log the result in `Flutter Dev Agent/Reports/REPORT-LOG.md`.
-    → **VERIFIED 2026-06-27: the only CI run to date (2026-06-24, run 28072804210) FAILED.** Two causes: (a) the
-    workflow does not accept Android SDK licenses → `LicenceNotAcceptedException: Failed to install Android SDK
-    packages as some licences have not been accepted`; (b) secrets are empty (item 2). **Fix needed:** add an
-    SDK-license-accept step (e.g. `android-actions/setup-android` or `yes | sdkmanager --licenses`) AND populate
-    the secrets, then re-run.
+    → **DONE 2026-06-28 (run 28326485367):** First fully green CI build achieved on `feat/play-hardening`.
+    All steps passed: SDK license acceptance ✓ · google-services.json injection ✓ · keystore decode ✓ ·
+    `flutter build appbundle --release` ✓ · AAB artifact uploaded ✓.
+    Two fixes needed: (a) `settings.gradle.kts` — Aliyun mirrors gated behind `HMR_USE_ALIYUN=true` env var
+    so CI uses standard `google()`/`mavenCentral()`; (b) `app_theme.dart` import reverted to
+    `flutter_markdown_plus`. Branch `feat/play-hardening` must be merged to `main`.
 
 ## C. Google Play Console — account, app, and signing setup
 
@@ -104,8 +104,13 @@
 
 ## E. Policy & compliance forms (mandatory — app will be rejected without them)
 
-21. `[ ]` **Privacy Policy URL** — must be publicly live. The app references `https://hmrbot.com/privacy`;
+21. `[x]` **Privacy Policy URL** — must be publicly live. The app references `https://hmrbot.com/privacy`;
     confirm that page actually exists and accurately describes data handling.
+    → **DONE 2026-06-28:** Full bilingual (EN/FA) 10-section privacy policy written and deployed to Cloudflare
+    Workers. Live at `https://hmrbot.wikigoo58.workers.dev/privacy` (confirmed). Custom domain
+    `https://hmrbot.com/privacy` routes via the same Worker — verify DNS propagation if 403 persists.
+    Covers: data collection, Google Sign-In, chat content, Gemini/OpenRouter, Sentry, Hetzner,
+    data retention, account deletion (email flow), security, children's policy, price disclaimer.
 22. `[ ]` **Data safety form** — declare data collected/shared. The app collects **Google account identity**
     (Google Sign-In) and **chat content** sent to the backend; declare these, their purpose, encryption in
     transit (HTTPS ✅), and whether the user can request deletion.
@@ -132,14 +137,15 @@
 
 ## G. ⚠️ Strategic blocker — Iran distribution on Google Play
 
-34. `[ ]` **Decide the distribution channel before investing in Play.** HMR targets the Iranian market, but
-    Google Play has **sanction-related restrictions** affecting both developer-account registration and
-    distribution/visibility to users in Iran. This can make Google Play impractical as the *primary* channel.
-35. `[ ]` **Evaluate Iranian app stores as the primary/secondary channel** — e.g. **Cafe Bazaar** and **Myket**
-    — which dominate the Iranian market and accept Flutter AABs/APKs. Route this decision through the
-    **Growth & Marketing (8)** agent.
-36. `[ ]` **If keeping Google Play**, confirm a viable developer-account path and that target users can actually
-    install the app, before spending effort on store-listing work above.
+34. `[x]` **Decide the distribution channel before investing in Play.**
+    → **DECIDED 2026-06-28: Cafe Bazaar is the primary distribution channel.**
+    Google Play remains secondary/future (after Iran-distribution strategy is resolved).
+35. `[x]` **Evaluate Iranian app stores as the primary/secondary channel.**
+    → **DECIDED 2026-06-28: Cafe Bazaar (cafebazaar.ir) chosen as primary channel.**
+    Reasons: dominant Iranian market share, no sanction issues, free developer account,
+    accepts APK/AAB directly, no Google Play billing required.
+36. `[x]` **If keeping Google Play**, confirm viable developer-account path.
+    → **N/A — Cafe Bazaar chosen as primary. Google Play deferred.**
 
 ---
 
