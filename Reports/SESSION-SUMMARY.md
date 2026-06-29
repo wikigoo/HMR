@@ -6,6 +6,33 @@
 
 ---
 
+## 2026-06-29 — Blog Generator Automation Engine (Growth & Marketing)
+
+- **Request:** Create standalone Python automation engine (`scripts/blog_generator.py`) that ingests
+  English RSS feeds, maps to HMR Pillars, deduplicates, and generates Persian advisory articles via
+  OpenRouter API.
+- **Agents engaged:** Supervisor (routing + verification) → **Growth & Marketing (8)**.
+- **Done:**
+  - `scripts/blog_generator.py` — full pipeline: RSS fetch (GSMArena, Android Authority, 9to5Mac) →
+    pillar classification (keyword-based, 5 pillars) → dedup (Levenshtein >70% threshold) →
+    OpenRouter Gemini Flash-Lite drafting → Astro `.md` output with validated YAML frontmatter.
+  - `scripts/requirements.txt` + `scripts/published_topics.json` (dedup registry).
+  - `HMR-Astro/src/content/config.ts` — Astro blog content collection schema.
+  - `HMR-Astro/src/pages/blog/index.astro` — blog listing with pillar filters.
+  - `HMR-Astro/src/pages/blog/[...slug].astro` — individual article page.
+  - Dry-run verified: 200 RSS entries fetched, all classified, dedup operational.
+- **HMR-rule check:** ✅ Persian output (AI prompt enforces Persian), ✅ honesty boundary (prompt
+  forbids fabrication), ✅ live-price-only (prices from RSS sources, not model memory), ✅ advisory
+  tone (prompt enforces "advise, never decide").
+- **Evidence:** Dry-run log (200 entries classified), all files created and verified on disk.
+- **Verdict:** APPROVED.
+- **Follow-ups:**
+  - Astro Web Agent (4): integrate blog into site nav/footer; add `blog.hmrbot.com` DNS.
+  - Backend & DB Agent (7): add blog output path to RAG ingestion pipeline if desired.
+  - Growth & Marketing: tune pillar keywords; add Iranian RSS sources (Zoomit, Tarfandestan).
+
+---
+
 ## 2026-06-27 — Closed the two follow-ups (image prune + backup)
 
 - **Request:** Execute the two open follow-ups from the Flowise-version session.

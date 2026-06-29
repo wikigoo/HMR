@@ -6,15 +6,14 @@
 
 ## 🔴 اولویت بالا
 
-- [ ] **۱ — HTTP → HTTPS اجباری نیست**  
-  `http://hmrbot.com` به جای redirect، مستقیم HTTP 200 برمی‌گرداند.  
-  **رفع:** Cloudflare Dashboard → SSL/TLS → Edge Certificates → **Always Use HTTPS** را روشن کنید.
+- [x] **۱ — HTTP → HTTPS اجباری نیست** ✅ ۲۰۲۶-۰۶-۲۹  
+  Cloudflare → SSL/TLS → Edge Certificates → Always Use HTTPS روشن شد.
 
 - [ ] **۲ — www.hmrbot.com ریدایرکت 301 ندارد**  
   `www.hmrbot.com` مستقیم HTTP 200 برمی‌گرداند، باید به `https://hmrbot.com` ریدایرکت کند.  
   **رفع:** Cloudflare Dashboard → Redirects → Bulk Redirects → اضافه کردن: `www.hmrbot.com/*` → `https://hmrbot.com/$1` (301, Permanent)
 
-- [ ] **۳ — هدرهای امنیتی وجود ندارند**  
+- [x] **۳ — هدرهای امنیتی وجود ندارند** ✅ ۲۰۲۶-۰۶-۲۹  
   همه ۶ هدر امنیتی استاندارد غایبند: `Strict-Transport-Security`, `X-Frame-Options`, `X-Content-Type-Options`, `Content-Security-Policy`, `Referrer-Policy`, `Permissions-Policy`  
   **رفع:** Cloudflare Dashboard → Rules → Transform Rules → Modify Response Header → اضافه کردن هدرها برای همه مسیرها:
   ```
@@ -29,7 +28,7 @@
 
 ## 🟡 اولویت متوسط
 
-- [ ] **۴ — ایمیل‌های دامنه ساخته نشده‌اند**  
+- [x] **۴ — ایمیل‌های دامنه ساخته نشده‌اند** ✅ ۲۰۲۶-۰۶-۲۹  
   سه آدرس در سایت و اپ استفاده شده ولی وجود ندارند:
   - `info@hmrbot.com` ← صفحه تماس
   - `support@hmrbot.com` ← اپ Flutter (حذف حساب)
@@ -37,7 +36,7 @@
   
   **رفع:** Cloudflare Dashboard → Email Routing → Add address → forward هر سه به `wikigoo58@gmail.com`
 
-- [ ] **۵ — زیردامنه‌های مرده لینک دارند**  
+- [x] **۵ — زیردامنه‌های مرده لینک دارند** ✅ ۲۰۲۶-۰۶-۲۹  
   `chat.hmrbot.com` در صفحه تماس لینک دارد ← Connection refused  
   `blog.hmrbot.com` در footer لینک دارد ← Connection refused  
   **رفع کوتاه‌مدت:** حذف لینک‌ها از `contact.astro` و layout footer  
