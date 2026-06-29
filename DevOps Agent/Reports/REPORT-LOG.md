@@ -5,6 +5,34 @@
 
 ---
 
+## 2026-06-28 — Site Analysis Report — hmrbot.com
+
+- **Agent:** DevOps Agent
+- **Triggered by:** user — "کامل و دقیق سایت را آنالیز کن و یک گزارش بنویس"
+- **Actions taken:**
+  - بررسی کامل ۵ صفحه سایت (HTTP status, size, title)
+  - تست هدرهای امنیتی
+  - بررسی زیردامنه‌ها (www, chat, blog, srv)
+  - تست HTTP → HTTPS redirect
+  - بررسی SSL certificate
+  - مانیتور منابع VPS (CPU, RAM, Disk, uptime)
+  - تست API چت‌بات با CORS
+  - بررسی ایمیل‌های دامنه
+  - تأیید تغییرات دیپلوی‌شده (لوگو، chatflow ID، لینک HMR)
+- **Tools / commands used:** `curl`, SSH, `docker stats`, `df -h`, `free -m`, `openssl s_client`
+- **Result:** گزارش کامل نوشته شد — ۶ مشکل یافت شد (۳ بالا، ۲ متوسط، ۱ پایین)
+- **Issues / risks:**
+  - هدرهای امنیتی غایب (HSTS, CSP, X-Frame-Options, ...)
+  - `www.hmrbot.com` ریدایرکت ندارد
+  - HTTP → HTTPS اجباری نیست
+  - ۳ ایمیل دامنه ساخته نشده
+  - `chat.hmrbot.com` و `blog.hmrbot.com` مرده ولی لینک دارند
+- **Knowledge-base updates:** فایل گزارش: `2026-06-28-site-analysis-hmrbot.md`
+- **Follow-ups / handoffs:** Cloudflare Dashboard برای رفع ۵ مشکل اول
+- **Supervisor verdict:** Pending
+
+---
+
 ## 2026-06-26 — Agent manual standardized
 
 - **Agent:** Infrastructure & Ops
